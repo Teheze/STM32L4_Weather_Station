@@ -1,0 +1,4 @@
+../Core/Src/background.c:41:6:background_init	80	static
+../Core/Src/background.c:67:6:background_render	40	static
+../Core/Src/background.c:86:6:background_animate	0	static
+../Core/Src/background.c:101:6:background_close	8	static

@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "i2c.h"
 #include "spi.h"
 #include "tim.h"
@@ -29,6 +30,13 @@
 #include "lcd.h"
 #include "lps25hb.h"
 #include "ds18b20.h"
+
+#include "hagl.h"
+#include "font6x9.h"
+#include "font5x7.h"
+#include "rgb565.h"
+
+#include "stdlib.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -91,6 +99,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_SPI2_Init();
   MX_I2C1_Init();
   MX_USART3_UART_Init();
@@ -102,8 +111,15 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   lcd_init();
+  background_init();
   while (1)
   {
+	  background_animate();
+	  hagl_put_text(L"Temperatura", 10, 5, WHITE, font6x9);
+	  hagl_put_text(L"wewnętrzna", 13, 15, WHITE, font6x9);
+	  while (lcd_is_busy()) {}
+	  background_render();
+	  lcd_copy();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

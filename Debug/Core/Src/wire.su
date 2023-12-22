@@ -1,0 +1,5 @@
+../Core/Src/wire.c:5:13:set_baudrate	8	static
+../Core/Src/wire.c:26:19:wire_reset	16	static
+../Core/Src/wire.c:52:9:wire_read	24	static
+../Core/Src/wire.c:75:6:wire_write	24	static
+../Core/Src/wire.c:97:9:wire_crc	16	static
