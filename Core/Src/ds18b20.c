@@ -12,6 +12,18 @@
 #define DS18B20_READ_SCRATCHPAD    0xBE
 
 
+HAL_StatusTypeDef ds18b20_init(const uint8_t* rom_code)
+{
+	  ds18b20_start_measure(rom_code);
+
+	  HAL_Delay(750);
+
+	  float temp = ds18b20_get_temp(rom_code);
+	  if (temp == 85.0f)
+	  return HAL_ERROR;
+	  else
+	  return HAL_OK;
+}
 
 HAL_StatusTypeDef ds18b20_read_address(uint8_t* rom_code)
 {

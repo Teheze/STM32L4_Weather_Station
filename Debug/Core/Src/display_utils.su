@@ -1,0 +1,2 @@
+../Core/Src/display_utils.c:46:6:get_measurements	16	static
+../Core/Src/display_utils.c:54:6:update_foreground	72	static

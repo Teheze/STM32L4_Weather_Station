@@ -25,6 +25,8 @@ SPDX-License-Identifier: MIT-0
 
 */
 
+
+
 #include <background.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -43,9 +45,8 @@ void background_init()
     uint8_t *ptr = plasma = malloc(DISPLAY_WIDTH * DISPLAY_HEIGHT * sizeof(uint8_t));
     palette = malloc(256 * sizeof(color_t));
 
-    /* Generate a continuous palette from light gray to white. */
     for (uint16_t i = 0; i < 256; i++) {
-        const uint8_t brightness = i / 30;
+        const uint8_t brightness = i / 20;
         palette[i] = hagl_color(brightness, brightness, brightness);
     }
 

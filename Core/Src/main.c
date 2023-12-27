@@ -30,13 +30,12 @@
 #include "lcd.h"
 #include "lps25hb.h"
 #include "ds18b20.h"
-
+#include "background.h"
+#include "display_utils.h"
 #include "hagl.h"
-#include "font6x9.h"
-#include "font5x7.h"
 #include "rgb565.h"
-
 #include "stdlib.h"
+extern const uint8_t font9x18B_ISO8859_2[];
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -68,7 +67,12 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  if (htim == &htim6) {
+	  get_measurements(NULL);
+  }
+}
 /* USER CODE END 0 */
 
 /**
@@ -104,21 +108,50 @@ int main(void)
   MX_I2C1_Init();
   MX_USART3_UART_Init();
   MX_TIM2_Init();
+  MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
+  lcd_init();
+
+  //Timer for cyclic measurements every 2 seconds
+  HAL_TIM_Base_Start_IT(&htim6);
+
+  if (lps25hb_init() == HAL_OK) {
+	hagl_put_text(L"OK: LPS25HB", 30, 10, GREEN, font9x18B_ISO8859_2);
+	lcd_copy();
+  } else {
+	hagl_put_text(L"Error: LPS25HB", 20, 10, RED, font9x18B_ISO8859_2);
+	lcd_copy();
+    Error_Handler();
+  }
+
+  if (ds18b20_init(NULL) == HAL_OK) {
+	hagl_put_text(L"OK: DS18B20", 30, 10+18, GREEN, font9x18B_ISO8859_2);
+	lcd_copy();
+  } else {
+	hagl_put_text(L"Error: DS18B20", 20, 10+18, RED, font9x18B_ISO8859_2);
+	lcd_copy();
+	Error_Handler();
+  }
+
+  //sensor calibration
+  lps25hb_set_calib(32);
+
+  HAL_Delay(500);
+  hagl_clear_screen();
+  background_init();
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  lcd_init();
-  background_init();
   while (1)
   {
 	  background_animate();
-	  hagl_put_text(L"Temperatura", 10, 5, WHITE, font6x9);
-	  hagl_put_text(L"wewnętrzna", 13, 15, WHITE, font6x9);
 	  while (lcd_is_busy()) {}
 	  background_render();
+
+	  update_foreground();
+
 	  lcd_copy();
     /* USER CODE END WHILE */
 

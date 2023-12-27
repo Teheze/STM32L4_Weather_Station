@@ -9,7 +9,7 @@ HAL_StatusTypeDef lps25hb_init(void);
 // return - result in degrees C
 float lps25hb_read_temp(void);
 
-// Odczyt ciśnienia
+// Pressure readout
 // return - result in hPa
 float lps25hb_read_pressure(void);
 

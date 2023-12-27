@@ -1,4 +1,5 @@
 "./Core/Src/background.o"
+"./Core/Src/display_utils.o"
 "./Core/Src/dma.o"
 "./Core/Src/ds18b20.o"
 "./Core/Src/gpio.o"
